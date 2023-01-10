@@ -4,33 +4,29 @@ using UnityEngine;
 
 public class PathFollower : MonoBehaviour
 {
-    // Nodes of path
-    Node[] PathNodes;
-    // It's.. yeah... the object that... want to moves
-    GameObject[] MovingObjects;
     // How fast do you want it to yeeeeet
     public float MovingSpeed;
+    // Nodes of path
+    private static Node[] PathNodes;
     // Which node are we
-    private int NodeIndex;
+    private int NodeIndex=0;
     // To count how many time passed from node to node (for Lerp())
     private float Timer;
     // Fun Vector3 that store Node positions
     private Vector3 PreviousPosition;
     private Vector3 NextPosition;
-
+    private GameObject Path;
     
     // Start is called before the first frame update
     void Start()
     {
-        // get cute moving obj
-        MovingObjects = GameObject.FindGameObjectsWithTag("MovingDude");
-        // get cute Nodes
-        PathNodes = GetComponentsInChildren<Node>();
-
+        Path = GameObject.FindGameObjectWithTag("Path");
+        PathNodes = Path.GetComponent<PathInitialize>().PathNodes;
         NodeIndex = 0;
         Timer = 0;
-            PreviousPosition = MovingObjects[0].transform.position;
-            NextPosition = PathNodes[NodeIndex].transform.position;
+        PreviousPosition = transform.position;
+        Debug.Log(PathNodes.Length);
+        NextPosition = PathNodes[0].transform.position;
     }
 
     void DrawLine() {
@@ -49,18 +45,15 @@ public class PathFollower : MonoBehaviour
         if(NodeIndex < PathNodes.Length) {
             //Debug.Log(NodeIndex);
             Timer += Time.deltaTime * MovingSpeed;
-
-            foreach(GameObject MovingObject in MovingObjects) {
-                // move object in a linear motion
-                if(MovingObject.transform.position != NextPosition) {
-                    MovingObject.transform.position = Vector3.Lerp(PreviousPosition, NextPosition, Timer);
-                } else { // when it reachs next node
+            // move object in a linear motion
+            if(transform.position != NextPosition) {
+                transform.position = Vector3.Lerp(PreviousPosition, NextPosition, Timer);
+            } else { // when it reachs next node
+                Timer = 0;
+                if(NodeIndex+1 < PathNodes.Length) {
                     Timer = 0;
-                    if(NodeIndex+1 < PathNodes.Length) {
-                        Timer = 0;
-                        PreviousPosition = PathNodes[NodeIndex].transform.position;
-                        NextPosition = PathNodes[++NodeIndex].transform.position;
-                    }
+                    PreviousPosition = PathNodes[NodeIndex].transform.position;
+                    NextPosition = PathNodes[++NodeIndex].transform.position;
                 }
             }
         }
