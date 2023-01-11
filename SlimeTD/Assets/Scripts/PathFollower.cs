@@ -25,7 +25,7 @@ public class PathFollower : MonoBehaviour
         NodeIndex = 0;
         Timer = 0;
         PreviousPosition = transform.position;
-        Debug.Log(PathNodes.Length);
+        // Debug.Log(PathNodes.Length);
         NextPosition = PathNodes[0].transform.position;
     }
 

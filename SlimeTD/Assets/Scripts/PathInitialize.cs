@@ -6,7 +6,7 @@ public class PathInitialize : MonoBehaviour
 {
     public Node[] PathNodes;
     void Awake() {
-        Debug.Log("HiHiHi");
+        // Debug.Log("HiHiHi");
         PathNodes = GetComponentsInChildren<Node>();
     }
 }
