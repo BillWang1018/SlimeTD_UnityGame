@@ -17,6 +17,8 @@ public class cameraScript : MonoBehaviour
         scaler = 30;
         changeAreaX = GetComponent<Camera>().pixelWidth / scaler;
         changeAreaY = GetComponent<Camera>().pixelHeight / scaler;
+        Debug.Log("changeAreaX:" + changeAreaX);
+        Debug.Log("changeAreaY:" + changeAreaY);
     }
 
     // Update is called once per frame
@@ -28,10 +30,10 @@ public class cameraScript : MonoBehaviour
 
         //Camera move when mousePos near the boarder
         mousePos = Input.mousePosition;
-        if (mousePos.x >= GetComponent<Camera>().pixelWidth - changeAreaX && mousePos.x <= GetComponent<Camera>().pixelWidth) GetComponent<Camera>().transform.position += new Vector3(sensitive, 0.0f,0.0f);
+        if (mousePos.x >= (GetComponent<Camera>().pixelWidth - changeAreaX) && (mousePos.x <= GetComponent<Camera>().pixelWidth)) GetComponent<Camera>().transform.position += new Vector3(sensitive, 0.0f,0.0f);
         if (mousePos.x <= changeAreaX && mousePos.x > 0) GetComponent<Camera>().transform.position -= new Vector3(sensitive, 0.0f, 0.0f);
 
-        if (mousePos.y >= GetComponent<Camera>().pixelHeight - changeAreaY && mousePos.y <= GetComponent<Camera>().pixelHeight) GetComponent<Camera>().transform.position += new Vector3(0.0f, sensitive, 0.0f);
+        if (mousePos.y >= (GetComponent<Camera>().pixelHeight - changeAreaY) && (mousePos.y <= GetComponent<Camera>().pixelHeight)) GetComponent<Camera>().transform.position += new Vector3(0.0f, sensitive, 0.0f);
         if (mousePos.y <= changeAreaY && mousePos.y > 0) GetComponent<Camera>().transform.position -= new Vector3(0.0f, sensitive, 0.0f);
     }
 }
