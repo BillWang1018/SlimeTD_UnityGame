@@ -20,7 +20,11 @@ public class PathFollower : MonoBehaviour
 
     
     // Start is called before the first frame update
+<<<<<<< HEAD
     void Start()
+=======
+    void Start()//er just close it?
+>>>>>>> 1453588807769f7c646590507a9e9e3d69c8b350
     {
         // get cute moving obj
         MovingObjects = GameObject.FindGameObjectsWithTag("MovingDude");
