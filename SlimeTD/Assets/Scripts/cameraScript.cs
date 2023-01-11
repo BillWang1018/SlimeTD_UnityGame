@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class cameraScript : MonoBehaviour
 {
-<<<<<<< HEAD
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-=======
     Vector3 mousePos;
     int changeAreaX;
     int changeAreaY;
@@ -25,19 +19,16 @@ public class cameraScript : MonoBehaviour
         changeAreaY = GetComponent<Camera>().pixelHeight / scaler;
         Debug.Log("changeAreaX:" + changeAreaX);
         Debug.Log("changeAreaY:" + changeAreaY);
->>>>>>> 1453588807769f7c646590507a9e9e3d69c8b350
     }
 
     // Update is called once per frame
     void Update()
     {
-<<<<<<< HEAD
         //Camera update
         if (Input.GetAxis("Mouse ScrollWheel") > 0) GetComponent<Camera>().orthographicSize -= 0.1f;
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0) GetComponent<Camera>().orthographicSize += 0.1f;
 
-=======
         //Camera Scale update
         if (Input.GetAxis("Mouse ScrollWheel") > 0) GetComponent<Camera>().orthographicSize -= 0.1f;
         if (Input.GetAxis("Mouse ScrollWheel") < 0) GetComponent<Camera>().orthographicSize += 0.1f;
@@ -49,6 +40,5 @@ public class cameraScript : MonoBehaviour
 
         if (mousePos.y >= (GetComponent<Camera>().pixelHeight - changeAreaY) && (mousePos.y <= GetComponent<Camera>().pixelHeight)) GetComponent<Camera>().transform.position += new Vector3(0.0f, sensitive, 0.0f);
         if (mousePos.y <= changeAreaY && mousePos.y > 0) GetComponent<Camera>().transform.position -= new Vector3(0.0f, sensitive, 0.0f);
->>>>>>> 1453588807769f7c646590507a9e9e3d69c8b350
     }
 }
