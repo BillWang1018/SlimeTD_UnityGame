@@ -9,11 +9,15 @@ public class WaveSpawner : MonoBehaviour
     public Transform spawnPoint;
     public int maxWaveCount = 10;
     public float timeBetweenSpawn = 1f;
-    public static float timeBetweenWaves = 5.5f;
+    public float __TimeBetweenWaves__ = 5.5f;
+    public static float timeBetweenWaves;
     public static float countdownTimer;
     private bool isSpawning;
 
-
+    void Awake()
+    {
+        timeBetweenWaves = __TimeBetweenWaves__;
+    }
     void Start() 
     {
         waveIndex = 0;
