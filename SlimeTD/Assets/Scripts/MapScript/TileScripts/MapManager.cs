@@ -16,12 +16,19 @@ public class MapManager : MonoBehaviour{
     
     [SerializeField]
     private List<FacilityData> FacilityDatas;
+    //=====================Tower=====================
 
+    [SerializeField]
+    private Tilemap TowerTileMap;
+    
+    [SerializeField]
+    private List<TowerData> TowerDatas;
 
     private Dictionary<TileBase,OreData> oreDataFromTiles;
     private Dictionary<TileBase,FacilityData> facilityDataFromTiles;
-
+    private Dictionary<TileBase,TowerData> towerDataFromTiles;
     private void Awake(){
+        //=====================Ore=====================
         oreDataFromTiles = new Dictionary<TileBase,OreData>();
 
         foreach(OreData data in OreDatas){
@@ -30,6 +37,7 @@ public class MapManager : MonoBehaviour{
             }
         }
 
+        //=====================Facility=====================
         facilityDataFromTiles = new Dictionary<TileBase,FacilityData>();
 
         foreach(FacilityData data in FacilityDatas){
@@ -38,6 +46,14 @@ public class MapManager : MonoBehaviour{
             }
         }
 
+        //=====================Tower=====================
+        towerDataFromTiles = new Dictionary<TileBase, TowerData>();
+
+        foreach(TowerData data in TowerDatas){
+            foreach(Tile tile in data.tiles){
+                towerDataFromTiles.Add(tile,data);
+            }
+        }
     }
 
     private void Update(){
@@ -49,7 +65,7 @@ public class MapManager : MonoBehaviour{
             //get the Tile on each map
             TileBase clickedOreTile = OreTileMap.GetTile(gridPos);
             TileBase clickedFacilityTile = FacilityTileMap.GetTile(gridPos);
-
+            TileBase clickedTower = TowerTileMap.GetTile(gridPos);
             bool jumpOff = false;
             if(clickedFacilityTile == null){
                 for(int i = -1 ; i <= 1 ; i++){
@@ -68,11 +84,11 @@ public class MapManager : MonoBehaviour{
                 }
             }
             //TileBase clickedTileUp = map.GetTile(gridPos + new Vector3Int(0,1));
-            float oreLevel = oreDataFromTiles[clickedOreTile].oreLevel;
+            //float oreLevel = oreDataFromTiles[clickedOreTile].oreLevel;
             
-            FacilityType type = facilityDataFromTiles[clickedFacilityTile].Facilitytype;
-
-            print("At pos:" + gridPos + " there's a [" + clickedOreTile + "]" + " type:" + type);// + " has oreLevel: " + oreLevel + " FacType:" + type);
+            //FacilityType type = facilityDataFromTiles[clickedFacilityTile].Facilitytype;
+            TowerType towerType = towerDataFromTiles[clickedTower].towerType;
+            print("At pos:" + gridPos + " there's a [" + clickedOreTile + "]" + (int)towerType);// + " has oreLevel: " + oreLevel + " FacType:" + type);
 
         }
     }

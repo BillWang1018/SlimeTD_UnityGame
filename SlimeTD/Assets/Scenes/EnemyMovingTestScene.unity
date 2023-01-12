@@ -1536,6 +1536,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 14513834903327906, guid: ebeb6dd410c815d4a8bad5e11c125b97, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 986734309715613975, guid: 3e10deed318a4f64a8ac951e84b1d618, type: 3}
     - target: {fileID: 7142785411186331296, guid: ebeb6dd410c815d4a8bad5e11c125b97, type: 3}
       propertyPath: m_Name
       value: towerShooter
