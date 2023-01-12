@@ -5,9 +5,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float lifespan;
-    private float life;
-    public float bulletAtk;
     public float bulletSpeed;
+    public float bulletAtk;
+    private float life;
     Rigidbody2D rb;
     Vector3 enemyPos;
     void Start()

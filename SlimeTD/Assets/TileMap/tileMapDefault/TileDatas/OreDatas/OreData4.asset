@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd66e2a0dfc8b0b49bdc1979f08008d6, type: 3}
-  m_Name: ResourceTileData7
+  m_Name: OreData4
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: d34a4f0f5edc7e442a9f626a28e5d4aa, type: 2}
-  oreLevel: 3
+  - {fileID: 11400000, guid: 7797d244da5e56844966a5a167022899, type: 2}
+  oreLevel: 0

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd66e2a0dfc8b0b49bdc1979f08008d6, type: 3}
-  m_Name: ResourceTileData4
+  m_Script: {fileID: 11500000, guid: 957d4226267c9c84c8227ba4e25299f9, type: 3}
+  m_Name: FacilityData
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: 7797d244da5e56844966a5a167022899, type: 2}
-  oreLevel: 2
+  - {fileID: 11400000, guid: 71af01bfdf65fd741af66731ee017fa4, type: 2}
+  Facilitytype: 0
