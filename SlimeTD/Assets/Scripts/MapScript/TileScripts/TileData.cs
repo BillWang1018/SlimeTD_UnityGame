@@ -7,5 +7,5 @@ using UnityEngine.Tilemaps;
 public class TileData : ScriptableObject
 {
     public TileBase[] tiles;
-    public float atkSpeed,atkDamage;
+    public int oreLevel;
 }

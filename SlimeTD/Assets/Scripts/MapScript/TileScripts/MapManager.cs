@@ -21,9 +21,7 @@ public class MapManager : MonoBehaviour{
                 dataFromTiles.Add(tile,tileData);
 
             }
-
         }
-
     }
 
     private void Update(){
@@ -31,9 +29,11 @@ public class MapManager : MonoBehaviour{
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int gridPos = map.WorldToCell(mousePos);
             TileBase clickedTile = map.GetTile(gridPos);
-            float atkSpeed = dataFromTiles[clickedTile].atkSpeed;
+            TileBase clickedTileUp = map.GetTile(gridPos + new Vector3Int(0,1));
+            float oreLevel = dataFromTiles[clickedTile].oreLevel;
+            float oreLevelUp = dataFromTiles[clickedTileUp].oreLevel;
 
-            print("At pos:" + gridPos + " there's a " + clickedTile + " has atkSpeed: " + atkSpeed);
+            print("At pos:" + gridPos + " there's a " + clickedTile + " has oreLevel: " + oreLevel + " oreLevelUp:" + oreLevelUp);
 
         }
     }
