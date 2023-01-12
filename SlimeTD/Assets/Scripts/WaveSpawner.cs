@@ -4,25 +4,30 @@ using UnityEngine;
 
 public class WaveSpawner : MonoBehaviour
 {
-    private int waveIndex;
+    public static int waveIndex;
     public Transform enemyPrefab;
     public Transform spawnPoint;
     public int maxWaveCount = 10;
     public float timeBetweenSpawn = 1f;
-    public float timeBetweenWaves = 5f;
-    private float countdownTimer;
+    public static float timeBetweenWaves = 5.5f;
+    public static float countdownTimer;
+    private bool isSpawning;
 
 
     void Start() 
     {
         waveIndex = 0;
-        countdownTimer = 0f;
+        countdownTimer = timeBetweenWaves;
+        isSpawning = false;
     }
     void Update()
     {
-        countdownTimer -= Time.deltaTime;
+        if(!isSpawning)
+            countdownTimer -= Time.deltaTime;
         if(countdownTimer <= 0) {
-            if(++waveIndex <= maxWaveCount) {
+            isSpawning = true;
+            if(waveIndex < maxWaveCount) {
+                waveIndex++;
                 Debug.Log(">>> Spawning wave "+waveIndex);
                 StartCoroutine(SpawnWave());
                 countdownTimer = timeBetweenWaves;
@@ -40,5 +45,6 @@ public class WaveSpawner : MonoBehaviour
             SpawnEnemy();
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
+        isSpawning = false;
     }
 }
