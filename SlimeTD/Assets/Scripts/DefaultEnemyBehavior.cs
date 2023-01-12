@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class DefaultEnemyBehavior : MonoBehaviour
 {
     public float speed=5f;
+    public static int health=10;
     private Transform previousWaypoint;
     private Transform nextWaypoint;
     private int waypointIndex;
     private float time, timer;
-    // Start is called before the first frame update
+
     void Start()
     {
         timer = 0;
@@ -18,15 +19,17 @@ public class EnemyMovement : MonoBehaviour
         if(Waypoints.points.Length > 1) {
             nextWaypoint = Waypoints.points[1];
         } else {
-            Destroy(gameObject);
+            ReachEnd();
         }
         time = Vector3.Distance(previousWaypoint.position, nextWaypoint.position)/speed;
     }
 
-    // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
+        if(health <= 0) {
+            Destroy(gameObject);
+        }
         if(transform.position != nextWaypoint.position) {
             transform.position = Vector3.Lerp(previousWaypoint.position, nextWaypoint.position, timer/time);
         } else {
@@ -37,9 +40,15 @@ public class EnemyMovement : MonoBehaviour
                 nextWaypoint = Waypoints.points[waypointIndex+1];
                 time = Vector3.Distance(previousWaypoint.position, nextWaypoint.position)/speed;
             } else {
-                Destroy(gameObject);
+                ReachEnd();
             }
         }
 
+    }
+
+    void ReachEnd() {
+        GameManager.lifeCount--;
+        Debug.Log(GameManager.lifeCount);
+        Destroy(gameObject);
     }
 }
