@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9199974313006338067}
   - component: {fileID: 6816205460245312824}
-  - component: {fileID: -8452564482260484999}
+  - component: {fileID: 1075943139911846193}
   m_Layer: 0
-  m_Name: SquareEnemy
+  m_Name: DefaultEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-8452564482260484999
+--- !u!114 &1075943139911846193
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9054715345902484719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8451829bfac7cb4fae6abeae773d5fb, type: 3}
+  m_Script: {fileID: 11500000, guid: adc9b13e3a0190e4cbd1be98db183a1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
