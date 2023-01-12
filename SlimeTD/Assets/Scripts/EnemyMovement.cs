@@ -18,7 +18,7 @@ public class EnemyMovement : MonoBehaviour
         if(Waypoints.points.Length > 1) {
             nextWaypoint = Waypoints.points[1];
         } else {
-            Destroy(gameObject);
+            ReachEnd();
         }
         time = Vector3.Distance(previousWaypoint.position, nextWaypoint.position)/speed;
     }
@@ -37,9 +37,15 @@ public class EnemyMovement : MonoBehaviour
                 nextWaypoint = Waypoints.points[waypointIndex+1];
                 time = Vector3.Distance(previousWaypoint.position, nextWaypoint.position)/speed;
             } else {
-                Destroy(gameObject);
+                ReachEnd();
             }
         }
 
+    }
+
+    void ReachEnd() {
+        GameManager.lifeCount--;
+        Debug.Log(GameManager.lifeCount);
+        Destroy(gameObject);
     }
 }
