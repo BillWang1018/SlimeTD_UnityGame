@@ -62,11 +62,12 @@ public class PathFollower : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D e){
+        //=================Slime modify here=================
         Health -= e.gameObject.GetComponent<Bullet>().bulletAtk;
-        if(Health <= 0.0f){
-            Destroy(this.gameObject,0.0f);
-
+        if(Health <= 0){
+            Destroy(this.gameObject);
         }
         Destroy(e.gameObject,0.0f);
     }
+
 }

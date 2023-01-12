@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 403102543}
   - component: {fileID: 403102542}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: OreTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20026,7 +20026,7 @@ GameObject:
   - component: {fileID: 455249561}
   - component: {fileID: 455249560}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: FacilityGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20114,7 +20114,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -20169,7 +20169,7 @@ GameObject:
   - component: {fileID: 796744156}
   - component: {fileID: 796744155}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: FacilityTileMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20543,16 +20543,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7922499dc6907344482ee1cb9b11ce8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 403102543}
-  tileDatas:
-  - {fileID: 11400000, guid: b6ddd506206e4d640973875022b9d7b5, type: 2}
-  - {fileID: 11400000, guid: 9e087d859a930d2489a5c691f9d01a96, type: 2}
-  - {fileID: 11400000, guid: 0cf4d3de2e5d06145bd3b3c6ad103778, type: 2}
-  - {fileID: 11400000, guid: 3e8b1a04fff601b4f9ef0d9f68994302, type: 2}
-  - {fileID: 11400000, guid: ad9cbee6f296bee499d811656ef91bdd, type: 2}
-  - {fileID: 11400000, guid: 59245b0644b37a948be050aa42eda5fa, type: 2}
-  - {fileID: 11400000, guid: 0c0874ac156663846a229c8e1914e6ec, type: 2}
-  - {fileID: 11400000, guid: b334873951eb06a47b6db14ac2e9a2d1, type: 2}
+  OreTileMap: {fileID: 403102543}
+  OreDatas:
+  - {fileID: 11400000, guid: fabe92ece9f92514ea8fe90081173b9d, type: 2}
+  - {fileID: 11400000, guid: b1a2f06fce091b243a1fc33940ec71b8, type: 2}
+  - {fileID: 11400000, guid: 6d8f7d21e9390934bbb78544f9ba458e, type: 2}
+  - {fileID: 11400000, guid: 8f2191d8cbb81e34cb93605eed72f2ff, type: 2}
+  - {fileID: 11400000, guid: b79b56a8946a7044bbb023c3c1841e18, type: 2}
+  - {fileID: 11400000, guid: c4154c0b4a0cef74d86205ec92078e8c, type: 2}
+  - {fileID: 11400000, guid: a3e12516a7fa04f409848737036818f3, type: 2}
+  - {fileID: 11400000, guid: c56f90bae04512343829937da66f1c0e, type: 2}
+  FacilityTileMap: {fileID: 796744156}
+  FacilityDatas:
+  - {fileID: 11400000, guid: fe17f3036234af24082a0535b516e0a0, type: 2}
 --- !u!4 &1964902633
 Transform:
   m_ObjectHideFlags: 0

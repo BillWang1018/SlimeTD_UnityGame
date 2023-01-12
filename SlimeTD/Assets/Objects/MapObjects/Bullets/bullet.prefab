@@ -12,7 +12,15 @@ GameObject:
   - component: {fileID: 7626583872060559237}
   - component: {fileID: 6190406747452991366}
   - component: {fileID: 8381741699674811620}
+<<<<<<< Updated upstream
   - component: {fileID: 4641821907697197894}
+=======
+<<<<<<< HEAD
+  - component: {fileID: 7577074211240255409}
+=======
+  - component: {fileID: 4641821907697197894}
+>>>>>>> 4a1b51a2e5477adedf607edc419f7b095a4a7006
+>>>>>>> Stashed changes
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -100,8 +108,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifespan: 5
+<<<<<<< Updated upstream
   bulletAtk: 0
   bulletSpeed: 5
+=======
+<<<<<<< HEAD
+  bulletSpeed: 8
+  bulletDamage: 0
+=======
+  bulletAtk: 0
+  bulletSpeed: 5
+>>>>>>> 4a1b51a2e5477adedf607edc419f7b095a4a7006
+>>>>>>> Stashed changes
 --- !u!50 &8381741699674811620
 Rigidbody2D:
   serializedVersion: 4
@@ -123,7 +141,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+<<<<<<< Updated upstream
 --- !u!61 &4641821907697197894
+=======
+<<<<<<< HEAD
+--- !u!61 &7577074211240255409
+=======
+--- !u!61 &4641821907697197894
+>>>>>>> 4a1b51a2e5477adedf607edc419f7b095a4a7006
+>>>>>>> Stashed changes
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
