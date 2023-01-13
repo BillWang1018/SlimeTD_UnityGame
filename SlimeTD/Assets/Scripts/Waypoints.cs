@@ -18,7 +18,7 @@ public class Waypoints : MonoBehaviour
     {
         // sussy lambda function to exclude parent itself
         points = GetComponentsInChildren<Transform>().Where(t => t != transform).ToArray();
-        Debug.Log(points.Length);
+        // Debug.Log(points.Length);
     }
     void Update() {
         DrawLine();

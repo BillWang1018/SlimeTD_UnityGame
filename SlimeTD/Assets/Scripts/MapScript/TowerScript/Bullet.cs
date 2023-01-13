@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifespan;
-    public float bulletSpeed;
-    public float bulletAtk;
+    public float __lifespan__ = 10f;
+    public float __BulletSpeed__ = 5f;
+    public float __BulletDmg__ = 2f;
+    public static float lifespan, bulletSpeed, bulletDmg;
     private float life;
     Rigidbody2D rb;
     Vector3 enemyPos;
+    void Awake()
+    {
+        lifespan = __lifespan__; bulletSpeed = __BulletSpeed__; bulletDmg = __BulletDmg__;
+    }
     void Start()
     {
         life = 0.0f;
@@ -23,10 +28,11 @@ public class Bullet : MonoBehaviour
         transform.rotation = Quaternion.Euler(0,0,rotz);
 
     }
-
     // Update is called once per frame
     void Update()
     {
+        //==================
+
         life += Time.deltaTime;
         if(life > lifespan){
             Destroy(this.gameObject,0);

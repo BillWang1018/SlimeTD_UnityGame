@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7142785411186331302}
   - component: {fileID: 7142785411186331303}
   - component: {fileID: 14513834903327906}
+  - component: {fileID: 6952313296010583179}
   m_Layer: 0
   m_Name: towerShooter
   m_TagString: Untagged
@@ -97,6 +98,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1409c42dfaa2c764ba3726aa7bc59dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atkSpeed: 0.2
+  atkSpeed: 0.5
   atkDamage: 2
-  bullet: {fileID: 4618755850396513830, guid: cd8e245b5c7f1ee458bca713c6ae19d3, type: 3}
+  bullet: {fileID: 986734309715613975, guid: 3e10deed318a4f64a8ac951e84b1d618, type: 3}
+--- !u!50 &6952313296010583179
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7142785411186331296}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -30,10 +30,11 @@ public class Tower : MonoBehaviour
         if(time >= atkSpeed){
             time = 0.0f;
             GameObject g = Instantiate(bullet,transform.position,Quaternion.identity);
-            g.GetComponent<Bullet>().bulletAtk = atkDamage;
+            Bullet.bulletDmg = atkDamage;
             
         }
     }
+    
 
 
     Vector3 getNearestEnemyPos(Vector3 pos){

@@ -8,6 +8,7 @@ TagManager:
   - MapTile
   - MapCreator
   - Path
+  - Bullet
   layers:
   - Default
   - TransparentFX

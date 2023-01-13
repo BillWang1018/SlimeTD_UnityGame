@@ -5,12 +5,17 @@ using UnityEngine;
 public class DefaultEnemyBehavior : MonoBehaviour
 {
     public float speed=5f;
-    public static int health=10;
+    public float __health__ = 10f;
+    public static float health;
     private Transform previousWaypoint;
     private Transform nextWaypoint;
     private int waypointIndex;
     private float time, timer;
 
+    void Awake()
+    {
+        health = __health__;
+    }
     void Start()
     {
         timer = 0;
@@ -26,10 +31,8 @@ public class DefaultEnemyBehavior : MonoBehaviour
 
     void Update()
     {
+        //===========
         timer += Time.deltaTime;
-        if(health <= 0) {
-            Destroy(gameObject);
-        }
         if(transform.position != nextWaypoint.position) {
             transform.position = Vector3.Lerp(previousWaypoint.position, nextWaypoint.position, timer/time);
         } else {
@@ -48,7 +51,17 @@ public class DefaultEnemyBehavior : MonoBehaviour
 
     void ReachEnd() {
         GameManager.lifeCount--;
-        Debug.Log(GameManager.lifeCount);
+        // Debug.Log(GameManager.lifeCount);
         Destroy(gameObject);
+    }
+
+    void OnCollisionEnter2D(Collision2D e){
+        //=================Slime modify here=================
+        if(e.gameObject.tag == "Bullet")
+            health -= Bullet.bulletDmg; 
+        if(health <= 0){
+            Destroy(this.gameObject);
+        }
+        Destroy(e.gameObject,0.0f);
     }
 }
