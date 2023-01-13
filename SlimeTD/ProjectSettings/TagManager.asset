@@ -9,6 +9,7 @@ TagManager:
   - MapCreator
   - Path
   - Bullet
+  - OverlayMap
   layers:
   - Default
   - TransparentFX
