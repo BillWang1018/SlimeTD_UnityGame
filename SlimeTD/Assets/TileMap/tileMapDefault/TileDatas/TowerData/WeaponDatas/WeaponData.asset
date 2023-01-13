@@ -16,4 +16,5 @@ MonoBehaviour:
   atkDamage: 2
   atkSpeed: 0.2
   bulletSpeed: 5
+  bulletLifeSpan: 2
   bullet: {fileID: 4571008759342288060, guid: 0d4d0383c4d536a4db4dcab693440f20, type: 3}

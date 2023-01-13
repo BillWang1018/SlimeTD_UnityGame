@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 public class MapManager : MonoBehaviour{
     //=====================Ore=====================
     [SerializeField]
@@ -28,13 +29,14 @@ public class MapManager : MonoBehaviour{
     private Dictionary<TileBase,FacilityData> facilityDataFromTiles;
     private Dictionary<TileBase,TowerData> towerDataFromTiles;
 
-
-
     //tower Locs
     private List<Vector3Int> towerLocs;
 
     //Towers --> Weapons --> time
     private Dictionary<Vector3Int,Dictionary<WeaponData,float>> weaponTimers;
+    //=====================UI image Drag=====================
+    [SerializeField]
+    private List<Image> imgList;
     private void Awake(){
         //=====================Ore=====================
         oreDataFromTiles = new Dictionary<TileBase,OreData>();
@@ -65,12 +67,14 @@ public class MapManager : MonoBehaviour{
         towerLocs = new List<Vector3Int>();
 
         weaponTimers = new Dictionary<Vector3Int, Dictionary<WeaponData, float>>();
+        //for each tower pos get tile
         foreach(Vector3Int v in TowerTileMap.cellBounds.allPositionsWithin){
             TileBase t = TowerTileMap.GetTile(v);
             //if there's a tower
             if(t != null){
                 towerLocs.Add(v);
                 Dictionary<WeaponData, float> WeaponTimeDic = new Dictionary<WeaponData, float>();
+                //for each weapon add to Dictionary  
                 foreach(TowerData td in TowerDatas){
                     foreach(WeaponData wd in td.weaponDatas){
                         WeaponTimeDic.Add(wd,0.0f);
@@ -79,21 +83,26 @@ public class MapManager : MonoBehaviour{
                 weaponTimers.Add(v,WeaponTimeDic);
             }
         }
-    }
 
+        //ImgListDrag
+        
+
+    }
+    
     private void Update(){
         //Vector3 Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Vector3Int gridPos = OreTileMap.WorldToCell(Pos);
         
-
+        //update tower
         foreach(Vector3Int loc in towerLocs){
             TileBase towerTile = TowerTileMap.GetTile(loc);  
             Vector3 worldLoc = TowerTileMap.CellToWorld(loc);
 
+            //make tower rotate
             Vector3 EnemyPos = getNearestEnemyPos(worldLoc);
             if(EnemyPos == Vector3.zero){continue;}
             Vector3 v = EnemyPos - worldLoc;
-            float rotz = Mathf.Atan2(v.y,v.x) * Mathf.Rad2Deg;
+            float rotz = Mathf.Atan2(v.y,v.x) * Mathf.Rad2Deg + 90.0f;
 
             Quaternion rotation = Quaternion.Euler(0,0,rotz);
             Matrix4x4 rotMatrix = Matrix4x4.Rotate(rotation);
@@ -107,7 +116,7 @@ public class MapManager : MonoBehaviour{
             };
             
             TowerTileMap.SetTile(tcData,false);
-
+            Vector3 anchor = new Vector3(0.16f,0.16f);
             foreach(WeaponData wd in towerDataFromTiles[towerTile].weaponDatas){
                 //have n weapon + n timer
                 weaponTimers[loc][wd] += Time.deltaTime;
@@ -115,7 +124,7 @@ public class MapManager : MonoBehaviour{
                 if(weaponTimers[loc][wd] >= wd.atkSpeed){
                     weaponTimers[loc][wd] = 0;
 
-                    GameObject b = Instantiate(wd.bullet,worldLoc,rotation);
+                    GameObject b = Instantiate(wd.bullet,worldLoc + anchor,rotation);
                     b.GetComponent<Bullet>().setBulletAtk(wd.atkDamage);
                     b.GetComponent<Bullet>().setBulletSpeed(wd.bulletSpeed);
                     b.GetComponent<Bullet>().setBulletLifeSpan(wd.bulletLifeSpan);
