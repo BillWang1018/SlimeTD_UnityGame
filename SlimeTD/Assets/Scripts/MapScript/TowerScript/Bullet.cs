@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifespan;
-    public float bulletSpeed;
-    public float bulletAtk;
+    private float lifespan;
+    private float bulletSpeed;
+    private float bulletAtk;
     private float life;
     Rigidbody2D rb;
     Vector3 enemyPos;
@@ -49,6 +49,19 @@ public class Bullet : MonoBehaviour
         return resPos;
     }
 
+    public float getBulletAtk(){
+        return bulletAtk;
+    }
+    public void setBulletAtk(float atk){
+        this.bulletAtk = atk;
+    }
+    public void setBulletLifeSpan(float lifespan){
+        this.lifespan = lifespan;
+    }
+    public void setBulletSpeed(float speed){
+        this.bulletSpeed = speed;
+
+    }
     float getDisSquared(Vector3 pos1,Vector3 pos2){
         return (pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y) + (pos1.z - pos2.z) * (pos1.z - pos2.z);
     }

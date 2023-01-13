@@ -20,10 +20,6 @@ public enum TowerType{
 public class TowerData : ScriptableObject
 {
     public TileBase[] tiles;
-
     public TowerType towerType;
-    public float atkDamage;
-    public float atkSpeed;
-    public float bulletSpeed;
-
+    public List<WeaponData> weaponDatas;
 }

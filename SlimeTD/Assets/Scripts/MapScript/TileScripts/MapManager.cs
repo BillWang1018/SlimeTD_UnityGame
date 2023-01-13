@@ -27,10 +27,17 @@ public class MapManager : MonoBehaviour{
     private Dictionary<TileBase,OreData> oreDataFromTiles;
     private Dictionary<TileBase,FacilityData> facilityDataFromTiles;
     private Dictionary<TileBase,TowerData> towerDataFromTiles;
+
+
+
+    //tower Locs
+    private List<Vector3Int> towerLocs;
+
+    //Towers --> Weapons --> time
+    private Dictionary<Vector3Int,Dictionary<WeaponData,float>> weaponTimers;
     private void Awake(){
         //=====================Ore=====================
         oreDataFromTiles = new Dictionary<TileBase,OreData>();
-
         foreach(OreData data in OreDatas){
             foreach(Tile tile in data.tiles){
                 oreDataFromTiles.Add(tile,data);
@@ -54,15 +61,76 @@ public class MapManager : MonoBehaviour{
                 towerDataFromTiles.Add(tile,data);
             }
         }
+        //add tower timer
+        towerLocs = new List<Vector3Int>();
+
+        weaponTimers = new Dictionary<Vector3Int, Dictionary<WeaponData, float>>();
+        foreach(Vector3Int v in TowerTileMap.cellBounds.allPositionsWithin){
+            TileBase t = TowerTileMap.GetTile(v);
+            //if there's a tower
+            if(t != null){
+                towerLocs.Add(v);
+                Dictionary<WeaponData, float> WeaponTimeDic = new Dictionary<WeaponData, float>();
+                foreach(TowerData td in TowerDatas){
+                    foreach(WeaponData wd in td.weaponDatas){
+                        WeaponTimeDic.Add(wd,0.0f);
+                    }
+                }
+                weaponTimers.Add(v,WeaponTimeDic);
+            }
+        }
     }
 
     private void Update(){
-        if(Input.GetMouseButton(0)){
+        //Vector3 Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Vector3Int gridPos = OreTileMap.WorldToCell(Pos);
+        
+
+        foreach(Vector3Int loc in towerLocs){
+            TileBase towerTile = TowerTileMap.GetTile(loc);  
+            Vector3 worldLoc = TowerTileMap.CellToWorld(loc);
+
+            Vector3 EnemyPos = getNearestEnemyPos(worldLoc);
+            if(EnemyPos == Vector3.zero){continue;}
+            Vector3 v = EnemyPos - worldLoc;
+            float rotz = Mathf.Atan2(v.y,v.x) * Mathf.Rad2Deg;
+
+            Quaternion rotation = Quaternion.Euler(0,0,rotz);
+            Matrix4x4 rotMatrix = Matrix4x4.Rotate(rotation);
+            
+            TileChangeData tcData = new TileChangeData{
+                position = loc,
+                tile = towerTile,
+                color = Color.white,
+                transform = rotMatrix
+
+            };
+            
+            TowerTileMap.SetTile(tcData,false);
+
+            foreach(WeaponData wd in towerDataFromTiles[towerTile].weaponDatas){
+                //have n weapon + n timer
+                weaponTimers[loc][wd] += Time.deltaTime;
+                //shoot
+                if(weaponTimers[loc][wd] >= wd.atkSpeed){
+                    weaponTimers[loc][wd] = 0;
+
+                    GameObject b = Instantiate(wd.bullet,worldLoc,rotation);
+                    b.GetComponent<Bullet>().setBulletAtk(wd.atkDamage);
+                    b.GetComponent<Bullet>().setBulletSpeed(wd.bulletSpeed);
+                    b.GetComponent<Bullet>().setBulletLifeSpan(wd.bulletLifeSpan);
+                        
+                        
+                }
+            } 
+        }
+        /*if(Input.GetMouseButton(0)){
             //get the TileMapPos
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int gridPos = OreTileMap.WorldToCell(mousePos);
 
             //get the Tile on each map
+            
             TileBase clickedOreTile = OreTileMap.GetTile(gridPos);
             TileBase clickedFacilityTile = FacilityTileMap.GetTile(gridPos);
             TileBase clickedTower = TowerTileMap.GetTile(gridPos);
@@ -89,7 +157,29 @@ public class MapManager : MonoBehaviour{
             //FacilityType type = facilityDataFromTiles[clickedFacilityTile].Facilitytype;
             TowerType towerType = towerDataFromTiles[clickedTower].towerType;
             print("At pos:" + gridPos + " there's a [" + clickedOreTile + "]" + (int)towerType);// + " has oreLevel: " + oreLevel + " FacType:" + type);
-
+            
         }
+        */
+    }
+    Vector3 getNearestEnemyPos(Vector3 pos){
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("MovingDude");
+        if(enemies.Length == 0)return new Vector3(0.0f,0.0f,0.0f);
+
+        Vector3 resPos = new Vector3(0.0f,0.0f,0.0f);
+        float minDis = float.MaxValue;
+        float dis = 0.0f;
+        foreach(GameObject g in enemies){
+            dis = getDisSquared(g.transform.position,pos);
+            if(dis < minDis){
+                minDis = dis;
+                resPos = g.transform.position;
+            }
+        }
+        return resPos;
+        
+    }
+
+    float getDisSquared(Vector3 pos1,Vector3 pos2){
+        return (pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y) + (pos1.z - pos2.z) * (pos1.z - pos2.z);
     }
 }
