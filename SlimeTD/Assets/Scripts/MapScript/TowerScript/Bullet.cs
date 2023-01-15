@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float __lifespan__ = 10f;
-    public float __BulletSpeed__ = 5f;
-    public float __BulletDmg__ = 2f;
-    public static float lifespan, bulletSpeed, bulletDmg;
+    [SerializeField]
+    public static float lifespan = 10f, bulletSpeed = 5f, bulletDmg = 2f;
     private float life;
     Rigidbody2D rb;
     Vector3 enemyPos;
-    void Awake()
-    {
-        lifespan = __lifespan__; bulletSpeed = __BulletSpeed__; bulletDmg = __BulletDmg__;
-    }
     void Start()
     {
         life = 0.0f;

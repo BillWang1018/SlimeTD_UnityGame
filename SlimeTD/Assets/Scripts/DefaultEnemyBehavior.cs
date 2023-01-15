@@ -5,17 +5,13 @@ using UnityEngine;
 public class DefaultEnemyBehavior : MonoBehaviour
 {
     public float speed=5f;
-    public float __health__ = 10f;
-    public static float health;
+    [SerializeField]
+    public static float health = 10f;
     private Transform previousWaypoint;
     private Transform nextWaypoint;
     private int waypointIndex;
     private float time, timer;
 
-    void Awake()
-    {
-        health = __health__;
-    }
     void Start()
     {
         timer = 0;
