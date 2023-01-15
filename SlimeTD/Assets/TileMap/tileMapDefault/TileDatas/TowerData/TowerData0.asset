@@ -15,5 +15,6 @@ MonoBehaviour:
   tiles:
   - {fileID: 11400000, guid: f48c1f2c3f7d7644d87f1e3f39592cd9, type: 2}
   towerType: 0
-  weaponDatas:
-  - {fileID: 11400000, guid: d95ec002f52e0cf40b83dc26fa895ca7, type: 2}
+  gunWeaponDatas:
+  - {fileID: 11400000, guid: 00384fb1124bd6943b396593e6485e67, type: 2}
+  laserWeaponDatas: []

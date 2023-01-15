@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour
     private float bulletSpeed;
     private float bulletAtk;
     private float life;
-    Rigidbody2D rb;
     Vector3 enemyPos;
     Vector3 velocity;
     void Start()
