@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d693421ad80db2548b5216f42c7d0e11, type: 3}
+  m_Name: TowerData0
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 11400000, guid: f48c1f2c3f7d7644d87f1e3f39592cd9, type: 2}
+  towerType: 0
+  weaponDatas:
+  - {fileID: 11400000, guid: d95ec002f52e0cf40b83dc26fa895ca7, type: 2}

@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifespan;
-    public float bulletSpeed;
-    public float bulletAtk;
+    private float lifespan;
+    private float bulletSpeed;
+    private float bulletAtk;
     private float life;
     Rigidbody2D rb;
     Vector3 enemyPos;
+    Vector3 velocity;
     void Start()
     {
         life = 0.0f;
         enemyPos = getNearestEnemyPos(transform.position);
         Vector2 direction = enemyPos - transform.position;
        
-        rb = GetComponent<Rigidbody2D>();
-        rb.velocity = direction.normalized * bulletSpeed;
+        //rb = GetComponent<Rigidbody2D>();
+        velocity = direction.normalized * bulletSpeed;
         
         float rotz = Mathf.Atan2(-direction.y,-direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0,0,rotz);
@@ -31,6 +32,8 @@ public class Bullet : MonoBehaviour
         if(life > lifespan){
             Destroy(this.gameObject,0);
         }
+        transform.position += velocity * Time.deltaTime;
+        isColliAnyEnemy();
     }
     Vector3 getNearestEnemyPos(Vector3 pos){
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("MovingDude");
@@ -49,10 +52,38 @@ public class Bullet : MonoBehaviour
         return resPos;
     }
 
+    public float getBulletAtk(){
+        return bulletAtk;
+    }
+    public void setBulletAtk(float atk){
+        this.bulletAtk = atk;
+    }
+    public void setBulletLifeSpan(float lifespan){
+        this.lifespan = lifespan;
+    }
+    public void setBulletSpeed(float speed){
+        this.bulletSpeed = speed;
+
+    }
     float getDisSquared(Vector3 pos1,Vector3 pos2){
-        return (pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y) + (pos1.z - pos2.z) * (pos1.z - pos2.z);
+        return (((pos1.x - pos2.x) * (pos1.x - pos2.x)) + ((pos1.y - pos2.y) * (pos1.y - pos2.y)));
     }
 
-    
+    bool isColliAnyEnemy(){
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("MovingDude");
+        float hitradiusSquared = 0.8f;
+        foreach(GameObject go in enemies){
+            float dis = getDisSquared(transform.position,go.transform.position);
+            if(dis < hitradiusSquared){
+                go.GetComponent<PathFollower>().Health -= bulletAtk;
+                Destroy(this.gameObject);
+                if(go.GetComponent<PathFollower>().Health <= 0){
+                    Destroy(go);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

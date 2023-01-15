@@ -12,10 +12,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - enemies
   - Water
   - UI
-  - 
+  - Bloom
   - 
   - 
   - 
@@ -42,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Node
+    uniqueID: 2139430293
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
