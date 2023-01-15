@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class M : MonoBehaviour
+public class GridChangeTest : MonoBehaviour
 {
     private Tilemap world;
     public Tilemap overlay;

@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class MousePosition : MonoBehaviour
 {
-    private Tilemap world;
+    private Grid world;
     public Tilemap overlay;
     private TileBase previewTile;
     public static Vector3Int tilePos;
@@ -13,7 +13,7 @@ public class MousePosition : MonoBehaviour
 
     void Start() {
         buildManager = BuildManager.instance;
-        world = gameObject.GetComponent<Tilemap>();
+        world = gameObject.GetComponent<Grid>();
     }
 
     void Update() {
