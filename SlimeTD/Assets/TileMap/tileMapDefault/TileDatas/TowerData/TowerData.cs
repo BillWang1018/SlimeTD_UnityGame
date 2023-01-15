@@ -21,5 +21,6 @@ public class TowerData : ScriptableObject
 {
     public TileBase[] tiles;
     public TowerType towerType;
-    public List<WeaponData> weaponDatas;
+    public List<gunWeaponData> gunWeaponDatas;
+    public List<laserWeaponData> laserWeaponDatas;
 }

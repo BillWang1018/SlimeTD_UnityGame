@@ -9,12 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eb31c8b7da4a2b4ca802a71cbc0030a, type: 3}
-  m_Name: WeaponData
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: Global Volume Profile
   m_EditorClassIdentifier: 
-  weaponType: 0
-  atkDamage: 2
-  atkSpeed: 0.2
-  bulletSpeed: 5
-  bulletLifeSpan: 2
-  bullet: {fileID: 4571008759342288060, guid: 0d4d0383c4d536a4db4dcab693440f20, type: 3}
+  components: []
