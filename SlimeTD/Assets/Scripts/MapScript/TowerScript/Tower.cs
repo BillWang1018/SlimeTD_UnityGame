@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Tilemaps;
 public class Tower : MonoBehaviour
 {
     public float atkSpeed;
     public float atkDamage;
-    
+    public float bulletLifeSpan;
     public GameObject bullet;
     Vector3 enemyPos;
     float time;
@@ -26,11 +26,12 @@ public class Tower : MonoBehaviour
         float rotz = Mathf.Atan2(v.y,v.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0,0,rotz);
         
-
+        
         if(time >= atkSpeed){
             time = 0.0f;
             GameObject g = Instantiate(bullet,transform.position,Quaternion.identity);
-            Bullet.bulletDmg = atkDamage;
+            g.GetComponent<Bullet>().setBulletAtk(atkDamage);
+            g.GetComponent<Bullet>().setBulletLifeSpan(bulletLifeSpan);
             
         }
     }
@@ -52,6 +53,7 @@ public class Tower : MonoBehaviour
             }
         }
         return resPos;
+        
     }
 
     float getDisSquared(Vector3 pos1,Vector3 pos2){
