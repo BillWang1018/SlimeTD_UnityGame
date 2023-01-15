@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TowerData
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: f48c1f2c3f7d7644d87f1e3f39592cd9, type: 2}
+  - {fileID: 11400000, guid: eaf93a329d788a246b9ece5dd682941b, type: 2}
   towerType: 0
   atkDamage: 2
   atkSpeed: 0.2
