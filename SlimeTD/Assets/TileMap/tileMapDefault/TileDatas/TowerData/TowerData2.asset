@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d693421ad80db2548b5216f42c7d0e11, type: 3}
-  m_Name: TowerData4
+  m_Name: TowerData2
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: 47013173940cde8419fa5f38caa9a88f, type: 2}
-  towerType: 4
+  - {fileID: 11400000, guid: c80031ac8b5a5bb488fd73ac2fbec1b2, type: 2}
+  towerType: 2
   gunWeaponDatas: []
-  laserWeaponDatas:
-  - {fileID: 11400000, guid: dda3752ac392e294b90a9a2f084e00c6, type: 2}
+  laserWeaponDatas: []
+  ringWeaponDatas:
+  - {fileID: 11400000, guid: 5c862289a406fb3409c539ffc7e8c0fa, type: 2}
