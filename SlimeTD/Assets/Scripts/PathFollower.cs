@@ -6,10 +6,12 @@ public class PathFollower : MonoBehaviour
 {
     // How fast do you want it to yeeeeet
     public float MovingSpeed;
+    //health
+    public float Health;
     // Nodes of path
     private static Node[] PathNodes;
     // Which node are we
-    private int NodeIndex=0;
+    private int NodeIndex = 0;
     // To count how many time passed from node to node (for Lerp())
     private float Timer;
     // Fun Vector3 that store Node positions
