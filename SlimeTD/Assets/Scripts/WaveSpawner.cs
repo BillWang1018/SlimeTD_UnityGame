@@ -5,19 +5,22 @@ using UnityEngine;
 public class WaveSpawner : MonoBehaviour
 {
     public static int waveIndex;
-    public Transform enemyPrefab;
+    public GameObject enemyPrefab;
     public Transform spawnPoint;
     public int maxWaveCount = 10;
     public float timeBetweenSpawn = 1f;
     public float timeBetweenWaves = 5.5f;
     public float countdownTimer;
     private bool isSpawning;
+    [SerializeField]
+    private List<EnemyData> enemyDatas;
 
-    void Start() 
+    void Awake() 
     {
         waveIndex = 0;
         countdownTimer = timeBetweenWaves;
         isSpawning = false;
+
     }
     void Update()
     {
@@ -36,8 +39,9 @@ public class WaveSpawner : MonoBehaviour
     }
 
     void SpawnEnemy() {
-        Transform newEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
-        newEnemy.gameObject.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0f, 1f, 0.1f, 0.5f, 0.75f, 1f, 0.8f, 1f);
+        GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation).gameObject;
+        // v this is for fun
+        newEnemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0f, 1f, 0.1f, 0.5f, 0.75f, 1f, 0.8f, 1f);
     }
     IEnumerator SpawnWave() 
     {

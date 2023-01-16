@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class DefaultEnemyBehavior : MonoBehaviour
 {
-    public float speed=5f;
-    public float health = 10f;
+    public EnemyData enemyData;
+    private float speed;
+    private float health;
     private Transform previousWaypoint;
     private Transform nextWaypoint;
     private int waypointIndex;
     private float time, timer;
 
-    void Start()
+    void Awake() 
     {
+        gameObject.GetComponent<SpriteRenderer>().sprite = enemyData.enemyImage;
+        speed = enemyData.speed;
+        health = enemyData.health;
+
         timer = 0;
         waypointIndex = 0;
+    }
+    void Start()
+    {
         previousWaypoint = Waypoints.points[0];
         if(Waypoints.points.Length > 1) {
             nextWaypoint = Waypoints.points[1];
@@ -58,5 +66,18 @@ public class DefaultEnemyBehavior : MonoBehaviour
             Destroy(this.gameObject);
         }
         Destroy(e.gameObject,0.0f);
+    }
+
+    public float getHealth() {
+        return this.health;
+    }
+    public void setHealth(float health) {
+        this.health = health;
+    }
+    public float getSpeed() {
+        return this.speed;
+    }
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }
