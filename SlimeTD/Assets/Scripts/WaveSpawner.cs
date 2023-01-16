@@ -9,9 +9,8 @@ public class WaveSpawner : MonoBehaviour
     public Transform spawnPoint;
     public int maxWaveCount = 10;
     public float timeBetweenSpawn = 1f;
-    [SerializeField]
-    public static float timeBetweenWaves = 5.5f;
-    public static float countdownTimer;
+    public float timeBetweenWaves = 5.5f;
+    public float countdownTimer;
     private bool isSpawning;
 
     void Start() 
@@ -37,7 +36,8 @@ public class WaveSpawner : MonoBehaviour
     }
 
     void SpawnEnemy() {
-        Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        Transform newEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        newEnemy.gameObject.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0f, 1f, 0.1f, 0.5f, 0.75f, 1f, 0.8f, 1f);
     }
     IEnumerator SpawnWave() 
     {
