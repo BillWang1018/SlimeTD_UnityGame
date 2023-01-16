@@ -17,7 +17,13 @@ public class MapManager : MonoBehaviour{
     
     [SerializeField]
     private List<FacilityData> FacilityDatas;
+    //=====================Tower=====================
 
+    [SerializeField]
+    private Tilemap TowerTileMap;
+    
+    [SerializeField]
+    private List<TowerData> TowerDatas;
 
     private Dictionary<TileBase,OreData> oreDataFromTiles;
     private Dictionary<TileBase,FacilityData> facilityDataFromTiles;
@@ -34,6 +40,7 @@ public class MapManager : MonoBehaviour{
     public Tilemap UItileMap;
     private TowerData currentSelectedTowerData = null;
     private void Awake(){
+        //=====================Ore=====================
         oreDataFromTiles = new Dictionary<TileBase,OreData>();
         foreach(OreData data in OreDatas){
             foreach(Tile tile in data.tiles){

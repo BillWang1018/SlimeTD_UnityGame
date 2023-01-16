@@ -54,7 +54,7 @@ public class DefaultEnemyBehavior : MonoBehaviour
     void OnCollisionEnter2D(Collision2D e){
         //=================Slime modify here=================
         if(e.gameObject.tag == "Bullet")
-            health -= Bullet.bulletDmg; 
+            health -= GetComponent<Bullet>().getBulletAtk(); 
         if(health <= 0){
             Destroy(this.gameObject);
         }
