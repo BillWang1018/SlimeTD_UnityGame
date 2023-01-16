@@ -6130,7 +6130,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 878854155}
   maxWaveCount: 10
   timeBetweenSpawn: 0.15
-  timeBetweenWaves: 3
 --- !u!4 &242771359
 Transform:
   m_ObjectHideFlags: 0
