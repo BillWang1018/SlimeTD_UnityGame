@@ -23,4 +23,5 @@ public class TowerData : ScriptableObject
     public TowerType towerType;
     public List<gunWeaponData> gunWeaponDatas;
     public List<laserWeaponData> laserWeaponDatas;
+    public List<ringWeaponData> ringWeaponDatas;
 }

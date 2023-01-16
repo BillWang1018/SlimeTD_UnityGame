@@ -5,8 +5,7 @@ using UnityEngine;
 public class DefaultEnemyBehavior : MonoBehaviour
 {
     public float speed=5f;
-    [SerializeField]
-    public static float health = 10f;
+    public float health = 10f;
     private Transform previousWaypoint;
     private Transform nextWaypoint;
     private int waypointIndex;
