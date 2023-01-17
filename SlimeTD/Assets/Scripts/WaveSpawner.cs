@@ -38,15 +38,15 @@ public class WaveSpawner : MonoBehaviour
 
     }
 
-    void SpawnEnemy() {
+    void SpawnEnemy(GameObject enemyPrefab, Transform spawnPoint) {
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation).gameObject;
-        // v this is for fun
+        // v this is for fun v
         newEnemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0f, 1f, 0.1f, 0.5f, 0.75f, 1f, 0.8f, 1f);
     }
     IEnumerator SpawnWave() 
     {
         for(int i=0; i < waveIndex; i++) {
-            SpawnEnemy();
+            SpawnEnemy(enemyPrefab, spawnPoint);
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
         isSpawning = false;

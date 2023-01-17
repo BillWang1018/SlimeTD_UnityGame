@@ -277,7 +277,7 @@ public class MapManager : MonoBehaviour{
                             tempV = worldLoc + towerToEnemyVector.normalized * radius;
                             //if hit
                             if(getDisSquared(tempV,g.transform.position) <= 0.8f && !ringDataStorage[loc][wd].encounteredEnemies[i].Contains(g)){
-                                g.GetComponent<DefaultEnemyBehavior>().setHealth(-10);
+                                g.GetComponent<DefaultEnemyBehavior>().addHealth(-10);
                                 if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                                     Destroy(g);
                                 }

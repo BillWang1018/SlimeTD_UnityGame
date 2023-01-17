@@ -74,6 +74,9 @@ public class DefaultEnemyBehavior : MonoBehaviour
     public void setHealth(float health) {
         this.health = health;
     }
+    public void addHealth(float h) {
+        this.health += h;
+    }
     public float getSpeed() {
         return this.speed;
     }
