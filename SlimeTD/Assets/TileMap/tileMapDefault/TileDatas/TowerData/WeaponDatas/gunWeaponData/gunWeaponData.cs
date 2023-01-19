@@ -14,6 +14,11 @@ public class gunWeaponData : ScriptableObject{
     public float bulletLifeSpan;
     //the bullet it shoot
     public GameObject bullet;
-
-    
+    private float atkRangeSquared;
+    public void setAtkRangeSquared(float atkRangeSquared){
+        this.atkRangeSquared = atkRangeSquared;
+    }
+    public float getAtkRangeSquared(){
+        return atkRangeSquared;
+    }
 }
