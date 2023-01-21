@@ -203,18 +203,18 @@ public class MapManager : MonoBehaviour{
                             if(getDisSquared(g.transform.position,b.transform.position) <= 0.8){
                                 b.SetActive(false);
 
-                                if(g.GetComponent<DefaultEnemyBehavior>().health - wd.atkDamage >= 0){
+                                if(g.GetComponent<DefaultEnemyBehavior>().getHealth() - wd.atkDamage >= 0){
                                     infoBoxDataStorage[loc].totalDamageDealt += wd.atkDamage;
                                 }else{
-                                    infoBoxDataStorage[loc].totalDamageDealt += g.GetComponent<DefaultEnemyBehavior>().health;
+                                    infoBoxDataStorage[loc].totalDamageDealt += g.GetComponent<DefaultEnemyBehavior>().getHealth();
                                 }
 
-                                g.GetComponent<DefaultEnemyBehavior>().health -= wd.atkDamage;
+                                g.GetComponent<DefaultEnemyBehavior>().addHealth(-wd.atkDamage);
 
                                 
 
 
-                                if(g.GetComponent<DefaultEnemyBehavior>().health <= 0){
+                                if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                                     Destroy(g);
                                 }
 
@@ -264,14 +264,14 @@ public class MapManager : MonoBehaviour{
                         continue;
                     }
 
-                    if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().health - wd.atkDamage >= 0){
+                    if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth() - wd.atkDamage >= 0){
                         infoBoxDataStorage[loc].totalDamageDealt += wd.atkDamage;
                     }else{
-                        infoBoxDataStorage[loc].totalDamageDealt += nearestEnemy.GetComponent<DefaultEnemyBehavior>().health;
+                        infoBoxDataStorage[loc].totalDamageDealt += nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth();
                     }
 
-                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().health -= wd.atkDamage * Time.deltaTime;
-                    if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().health <= 0){
+                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().addHealth(-wd.atkDamage * Time.deltaTime);
+                    if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                         Destroy(nearestEnemy);
                     }
                     //draw laser
@@ -352,8 +352,8 @@ public class MapManager : MonoBehaviour{
                                 tempV.z = 0;
                                 //if hit
                                 if(getDisSquared(tempV,g.transform.position) <= 0.8f && !ringDataStorage[loc][wd].encounteredEnemies[i].Contains(g)){
-                                    g.GetComponent<DefaultEnemyBehavior>().health -= wd.atkDamage;
-                                    if(g.GetComponent<DefaultEnemyBehavior>().health <= 0){
+                                    g.GetComponent<DefaultEnemyBehavior>().addHealth(-wd.atkDamage);
+                                    if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                                         Destroy(g);
                                     }
                                     ringDataStorage[loc][wd].encounteredEnemies[i].Add(g);

@@ -55,5 +55,21 @@ public class Bullet : MonoBehaviour
         return (((pos1.x - pos2.x) * (pos1.x - pos2.x)) + ((pos1.y - pos2.y) * (pos1.y - pos2.y)));
     }
 
+    bool isColliAnyEnemy(){
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("MovingDude");
+        float hitradiusSquared = 0.8f;
+        foreach(GameObject go in enemies){
+            float dis = getDisSquared(transform.position,go.transform.position);
+            if(dis < hitradiusSquared){
+                go.GetComponent<DefaultEnemyBehavior>().addHealth(-bulletAtk);
+                Destroy(this.gameObject);
+                if(go.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
+                    Destroy(go);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
