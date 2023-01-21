@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
+    public Image healthBar;
     private float healthPercentage;
     private float maxHealth;
     private float currHealth;
     void Start()
     {
+        GetComponent<Canvas>().worldCamera = FindObjectOfType<Camera>();
         maxHealth = GetComponentInParent<DefaultEnemyBehavior>().enemyData.health;
         currHealth = GetComponentInParent<DefaultEnemyBehavior>().getHealth();
     }
@@ -17,7 +19,7 @@ public class HealthBar : MonoBehaviour
     {
         currHealth = GetComponentInParent<DefaultEnemyBehavior>().getHealth();
         healthPercentage = currHealth / maxHealth;
-        GameObject.Find("Health").GetComponent<Image>().fillAmount = healthPercentage;
-        GameObject.Find("Health").GetComponent<Image>().color = Color.Lerp(Color.red, Color.green, healthPercentage);
+        healthBar.fillAmount = healthPercentage;
+        healthBar.color = Color.Lerp(Color.red, Color.green, healthPercentage);
     }
 }
