@@ -11,4 +11,13 @@ public class ringWeaponData : ScriptableObject
     public float lifespan;
     //draws Ring
     public LineRenderer ring;
+    public List<ParticleSystem> particleSystemList;//prefab
+    //atkRange = MaxRadius = ringScaleSpeed * lifespan
+    private float atkRangeSquared;
+    public void setAtkRangeSquared(float atkRangeSquared){
+        this.atkRangeSquared = atkRangeSquared;
+    }
+    public float getAtkRangeSquared(){
+        return atkRangeSquared;
+    }
 }

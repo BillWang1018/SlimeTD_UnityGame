@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 public class Tower : MonoBehaviour
 {
+    /*
     public float atkSpeed;
     public float atkDamage;
     public float bulletLifeSpan;
@@ -59,4 +60,5 @@ public class Tower : MonoBehaviour
     float getDisSquared(Vector3 pos1,Vector3 pos2){
         return (pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y) + (pos1.z - pos2.z) * (pos1.z - pos2.z);
     }
+    */
 }

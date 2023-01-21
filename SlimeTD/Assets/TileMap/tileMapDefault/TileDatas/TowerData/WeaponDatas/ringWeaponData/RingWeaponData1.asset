@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: RingWeaponData1
   m_EditorClassIdentifier: 
   atkDamage: 100
-  atkSpeed: 0.5
-  ringScaleSpeed: 3
-  lifespan: 1
+  atkSpeed: 1
+  ringScaleSpeed: 10
+  lifespan: 0.2
   ring: {fileID: 8956197713310972173, guid: 12ed73aa66bc1f34fbb41050571e5743, type: 3}
+  particleSystemList:
+  - {fileID: 2680136367508332943, guid: 4b0f3719544e0e943bb2bd099255b911, type: 3}

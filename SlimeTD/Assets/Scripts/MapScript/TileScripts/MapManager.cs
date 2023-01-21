@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+
+using TMPro;
 public class MapManager : MonoBehaviour{
     //=====================Ore=====================
     [SerializeField]
@@ -33,11 +35,22 @@ public class MapManager : MonoBehaviour{
     private List<Vector3Int> towerLocs;
 
     //Towers --> Weapons --> time
-    private Dictionary<Vector3Int,Dictionary<gunWeaponData,float>> gunWeaponTimers;
-    private Dictionary<Vector3Int,Dictionary<laserWeaponData,float>> laserWeaponTimers;
-    private Dictionary<Vector3Int,Dictionary<laserWeaponData,LineRenderer>> laserWeaponRenderers;
+    private Dictionary<Vector3Int,Dictionary<gunWeaponData,GunDataStorer>> gunDataStorage;
+    //laser
+    private Dictionary<Vector3Int,Dictionary<laserWeaponData,LaserDataStorer>> laserWeaponStorage;
     //Rings
     private Dictionary<Vector3Int,Dictionary<ringWeaponData,RingDataStorer>> ringDataStorage;
+    private Dictionary<ringWeaponData,ParticleSystem> ringParticleEffect;
+
+    public class GunDataStorer{
+        public float time = 0.0f;
+        public List<GameObject> bulletpool = new List<GameObject>();
+        public int currentBulletIndex = 0;
+    };
+    public class LaserDataStorer{
+        public float time = 0.0f;
+        public LineRenderer lineRenderer;
+    }
     public class RingDataStorer{
         //the ring tower's timer
         public float time = 0.0f;
@@ -47,11 +60,14 @@ public class MapManager : MonoBehaviour{
         public int nextIndexToEnable = 0;
         //ring -> enemy
         public List<List<GameObject>> encounteredEnemies = new List<List<GameObject>>();
+        
     }
 
+    
     //=====================UI image place=====================
     public Tilemap UItileMap;
     private TowerData currentSelectedTowerData = null;
+    //InfoBox
     private void Awake(){
         //=====================Ore=====================
         oreDataFromTiles = new Dictionary<TileBase,OreData>();
@@ -71,77 +87,58 @@ public class MapManager : MonoBehaviour{
 
         //=====================All the Tower Data store=====================
         towerDataFromTiles = new Dictionary<TileBase, TowerData>();
-
+        ringParticleEffect = new Dictionary<ringWeaponData, ParticleSystem>();
+        //!-modify the data-!
         foreach(TowerData data in TowerDatas){
+            //===========gun=========set atkRangeSquared
+            for(int i = 0 ; i < data.gunWeaponDatas.Count ; i++){
+                float x = data.gunWeaponDatas[i].bulletLifeSpan * data.gunWeaponDatas[i].bulletSpeed;
+                data.gunWeaponDatas[i].setAtkRangeSquared(x * x);
+            }
+            //===========laser========set atkRangeSquared
+            for(int i = 0 ; i < data.laserWeaponDatas.Count ; i++){
+                data.laserWeaponDatas[i].setAtkRangeSquared(data.laserWeaponDatas[i].atkRange * data.laserWeaponDatas[i].atkRange);
+            }
+            //===========ring=========add Praticles data
+            for(int i = 0 ; i < data.ringWeaponDatas.Count ; i++){
+                for(int  j = 0 ; j < data.ringWeaponDatas[i].particleSystemList.Count ; j++){
+                    ringParticleEffect.Add(data.ringWeaponDatas[i],Instantiate(data.ringWeaponDatas[i].particleSystemList[j]));
+                }
+                //set ringweapondata's atkRange(According to the lifespan and ScaleSpeed)
+                float x = data.ringWeaponDatas[i].lifespan * data.ringWeaponDatas[i].ringScaleSpeed;
+                data.ringWeaponDatas[i].setAtkRangeSquared(x * x);
+            }
+
             foreach(Tile tile in data.tiles){
                 towerDataFromTiles.Add(tile,data);
             }
+            
         }
         //add tower timer
         towerLocs = new List<Vector3Int>();
 
-        gunWeaponTimers = new Dictionary<Vector3Int, Dictionary<gunWeaponData, float>>();
-        laserWeaponTimers = new Dictionary<Vector3Int, Dictionary<laserWeaponData, float>>();
-        laserWeaponRenderers = new Dictionary<Vector3Int, Dictionary<laserWeaponData, LineRenderer>>();
+        gunDataStorage = new Dictionary<Vector3Int, Dictionary<gunWeaponData, GunDataStorer>>();
+        laserWeaponStorage = new Dictionary<Vector3Int, Dictionary<laserWeaponData, LaserDataStorer>>();
         ringDataStorage = new Dictionary<Vector3Int, Dictionary<ringWeaponData, RingDataStorer>>();
+        //the storage to store the info inside infobox
+        infoBoxDataStorage = new Dictionary<Vector3Int, infoBoxClass>();
         //for each tower pos get tile
         foreach(Vector3Int v in TowerTileMap.cellBounds.allPositionsWithin){
             TileBase t = TowerTileMap.GetTile(v);
             Vector3 worldLoc = TowerTileMap.CellToWorld(v);
             //if there's a tower
             if(t != null){
-                towerLocs.Add(v);
-                //add the gunWeaponData in to Dic
-                
-                //for each weapon add to childDictionary  
-
-                //Gun weapon data
-                if(towerDataFromTiles[t].gunWeaponDatas != null){
-                    Dictionary<gunWeaponData, float> gunWeaponTimeDic = new Dictionary<gunWeaponData, float>();
-                    foreach(gunWeaponData wd in towerDataFromTiles[t].gunWeaponDatas){
-                        gunWeaponTimeDic.Add(wd,0.0f);
-                    }
-                    gunWeaponTimers.Add(v,gunWeaponTimeDic);
-                }
-
-                //Laser weapon data
-                if(towerDataFromTiles[t].laserWeaponDatas != null){
-                    Dictionary<laserWeaponData, float> laserWeaponTimeDic = new Dictionary<laserWeaponData, float>();
-                    Dictionary<laserWeaponData, LineRenderer> laserRendererDic = new Dictionary<laserWeaponData, LineRenderer>();
-                    foreach(laserWeaponData lw in towerDataFromTiles[t].laserWeaponDatas){
-                        laserWeaponTimeDic.Add(lw,0.0f);
-                        laserRendererDic.Add(lw,Instantiate(lw.laser,Vector3.zero,Quaternion.identity));
-                    }
-                    laserWeaponTimers.Add(v,laserWeaponTimeDic);
-                    laserWeaponRenderers.Add(v,laserRendererDic);
-                }
-
-                //Ring weapon data
-                if(towerDataFromTiles[t].ringWeaponDatas != null){
-                    Dictionary<ringWeaponData,RingDataStorer> ringWeaponDic = new Dictionary<ringWeaponData, RingDataStorer>();
-                    foreach(ringWeaponData rd in towerDataFromTiles[t].ringWeaponDatas){
-                        RingDataStorer rds = new RingDataStorer();
-                        int LineRenderersNeed = (int)(rd.lifespan / rd.atkSpeed) + 1;
-                        for(int i = 0 ; i < LineRenderersNeed ; i++){
-                            LineRenderer linerenderer = Instantiate(rd.ring,Vector3.zero,Quaternion.identity);
-                            linerenderer.positionCount = 50;
-                            rds.LineRenderers.Add(linerenderer);
-                            rds.LineRenderRadius.Add(0.0f);
-                            rds.LineRenderTime.Add(0.0f);
-                            rds.encounteredEnemies.Add(new List<GameObject>());
-                        }
-
-                        ringWeaponDic.Add(rd,rds);
-                    }
-                    ringDataStorage.Add(v,ringWeaponDic);
-                }
+                placeTower(v,towerDataFromTiles[t]);
             }
         }
-
-        //ImgListDrag
+        
     }
     public GameObject inventory;
+    
+    Vector3 anchor = new Vector3(0.16f,0.16f);
     private void Update(){
+        //infoBox update
+        ClickedTileTower();
         //update UI
         PlaceUItower();
 
@@ -166,78 +163,147 @@ public class MapManager : MonoBehaviour{
 
             GameObject nearestEnemy = getNearestEnemy(worldLoc);
             
-            //if no enemy
-            if(nearestEnemy == null)break;
-
-            Vector3 EnemyPos = nearestEnemy.transform.position;
+            Vector3 EnemyPos = Vector3.zero;
+            Quaternion rotation = Quaternion.identity;
+            Vector3 v = Vector3.zero;
+            if(nearestEnemy != null){
+                EnemyPos = nearestEnemy.transform.position;
             
+                //make tower rotate
+                v = EnemyPos - (worldLoc + anchor);
+                float rotz = Mathf.Atan2(v.y,v.x) * Mathf.Rad2Deg + 90.0f;
 
-            //make tower rotate
-            Vector3 v = EnemyPos - worldLoc;
-            float rotz = Mathf.Atan2(v.y,v.x) * Mathf.Rad2Deg + 90.0f;
+                rotation = Quaternion.Euler(0,0,rotz);
+                Matrix4x4 rotMatrix = Matrix4x4.Rotate(rotation);
+                
+                TileChangeData tcData = new TileChangeData{
+                    position = loc,
+                    tile = towerTile,
+                    color = Color.white,
+                    transform = rotMatrix
 
-            Quaternion rotation = Quaternion.Euler(0,0,rotz);
-            Matrix4x4 rotMatrix = Matrix4x4.Rotate(rotation);
-            
-            TileChangeData tcData = new TileChangeData{
-                position = loc,
-                tile = towerTile,
-                color = Color.white,
-                transform = rotMatrix
-
-            };
-            
-            TowerTileMap.SetTile(tcData,false);
-            Vector3 anchor = new Vector3(0.16f,0.16f);
-
-
+                };
+                
+                TowerTileMap.SetTile(tcData,false);
+            }
+            Vector3 worldLocCenter = worldLoc + anchor;
             //every weapon's func
             if(towerDataFromTiles[towerTile].gunWeaponDatas != null){
                 foreach(gunWeaponData wd in towerDataFromTiles[towerTile].gunWeaponDatas){
-                    //have n weapon + n timer
-                    gunWeaponTimers[loc][wd] += Time.deltaTime;
-                    //shoot
-                    if(gunWeaponTimers[loc][wd] >= wd.atkSpeed){
-                        gunWeaponTimers[loc][wd] -= wd.atkSpeed;
 
-                        GameObject b = Instantiate(wd.bullet,worldLoc + anchor,rotation);
+                    //check if the bullet hit
+                    foreach(GameObject b in gunDataStorage[loc][wd].bulletpool){
+                        if(wd.bulletLifeSpan < b.GetComponent<Bullet>().getLife()){
+                            b.SetActive(false);
+                        }
+                        if(!b.activeSelf)continue;
+                        //if active then check colli
+                        foreach(GameObject g in currentEnemies){
+                            //if colli
+                            if(getDisSquared(g.transform.position,b.transform.position) <= 0.8){
+                                b.SetActive(false);
+
+                                if(g.GetComponent<DefaultEnemyBehavior>().getHealth() - wd.atkDamage >= 0){
+                                    infoBoxDataStorage[loc].totalDamageDealt += wd.atkDamage;
+                                }else{
+                                    infoBoxDataStorage[loc].totalDamageDealt += g.GetComponent<DefaultEnemyBehavior>().getHealth();
+                                }
+
+                                g.GetComponent<DefaultEnemyBehavior>().addHealth(- wd.atkDamage);
+
+                                
+
+
+                                if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
+                                    Destroy(g);
+                                }
+
+                                
+
+                            } 
+                        }
+                    }
+
+                    //have n weapon + n timer
+                    gunDataStorage[loc][wd].time += Time.deltaTime;
+                    //if no enemy (or not in the range) then no shoot
+                    if(nearestEnemy == null || getDisSquared(EnemyPos,worldLocCenter) > wd.getAtkRangeSquared())break;
+                    //shoot
+                    if(gunDataStorage[loc][wd].time >= wd.atkSpeed){
+                        gunDataStorage[loc][wd].time = 0;
+                        int index = gunDataStorage[loc][wd].currentBulletIndex;
+                        GameObject b = gunDataStorage[loc][wd].bulletpool[index];
+                        b.transform.position = worldLocCenter;
+                        b.transform.rotation = rotation;
+                        //gunDataStorge[loc][wd].bulletpool
+                        //GameObject b = Instantiate(wd.bullet,worldLocCenter,rotation);
                         b.GetComponent<Bullet>().setBulletAtk(wd.atkDamage);
                         b.GetComponent<Bullet>().setBulletSpeed(wd.bulletSpeed);
                         b.GetComponent<Bullet>().setBulletLifeSpan(wd.bulletLifeSpan);
+                        b.GetComponent<Bullet>().setIniDirection(v.normalized);
+                        b.GetComponent<Bullet>().resetLife();
                             
-                            
+                        b.SetActive(true);
+
+                        gunDataStorage[loc][wd].currentBulletIndex++;
+                        if(gunDataStorage[loc][wd].currentBulletIndex >= gunDataStorage[loc][wd].bulletpool.Count){
+                            gunDataStorage[loc][wd].currentBulletIndex = 0;
+                        }
                     }
                 } 
             }
-
+            //laser weapon func
             if(towerDataFromTiles[towerTile].laserWeaponDatas != null){
                 foreach(laserWeaponData wd in towerDataFromTiles[towerTile].laserWeaponDatas){
                     //have n weapon + n timer
-                    laserWeaponTimers[loc][wd] += Time.deltaTime;
-                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().setHealth(-wd.atkDamage * Time.deltaTime);
+                    laserWeaponStorage[loc][wd].time += Time.deltaTime;
+                    
+                    //no enemy(or not in the range) then no laser rendered
+                    if(nearestEnemy == null || getDisSquared(EnemyPos,worldLocCenter) > wd.getAtkRangeSquared()){   
+                        laserWeaponStorage[loc][wd].lineRenderer.enabled = false;
+                        continue;
+                    }
+
+                    if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth() - wd.atkDamage >= 0){
+                        infoBoxDataStorage[loc].totalDamageDealt += wd.atkDamage;
+                    }else{
+                        infoBoxDataStorage[loc].totalDamageDealt += nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth();
+                    }
+
+                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().addHealth(- wd.atkDamage * Time.deltaTime);
+                    if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
+                        Destroy(nearestEnemy);
+                    }
                     //draw laser
-                    laserWeaponRenderers[loc][wd].enabled = true;
-                    laserWeaponRenderers[loc][wd].SetPosition(0,worldLoc);
-                    laserWeaponRenderers[loc][wd].SetPosition(1,EnemyPos);
+                    
+                    laserWeaponStorage[loc][wd].lineRenderer.enabled = true;
+                    laserWeaponStorage[loc][wd].lineRenderer.SetPosition(0,worldLocCenter);
+                    laserWeaponStorage[loc][wd].lineRenderer.SetPosition(1,EnemyPos);
                     //wd.laser.transform.position = worldLoc;
                     
                 }
             }
+            //ring weapon func
             if(towerDataFromTiles[towerTile].ringWeaponDatas != null){
                 foreach(ringWeaponData wd in towerDataFromTiles[towerTile].ringWeaponDatas){
                     //have n weapon + n timer
                     ringDataStorage[loc][wd].time += Time.deltaTime;
                     //shoot ring (add new renderer)
-                    if(ringDataStorage[loc][wd].time >= wd.atkSpeed){
-                        ringDataStorage[loc][wd].time -= wd.atkSpeed;
+                    if(ringDataStorage[loc][wd].time >= wd.atkSpeed && nearestEnemy != null && getDisSquared(nearestEnemy.transform.position,worldLocCenter) < wd.getAtkRangeSquared()){
+                        ringDataStorage[loc][wd].time = 0;
 
                         int index = ringDataStorage[loc][wd].nextIndexToEnable;
-
-                        ringDataStorage[loc][wd].LineRenderers[index].enabled = true;
                         ringDataStorage[loc][wd].LineRenderRadius[index] = 0.0f;
                         ringDataStorage[loc][wd].LineRenderTime[index] = 0.0f;
+
+                        for(int j = 0 ; j < ringDataStorage[loc][wd].LineRenderers[index].positionCount ; j++){
+                            ringDataStorage[loc][wd].LineRenderers[index].SetPosition(j,worldLocCenter);
+                        }
+
+                        ringDataStorage[loc][wd].LineRenderers[index].enabled = true;
                         ringDataStorage[loc][wd].nextIndexToEnable++;
                         //out of index bounds
+                        //print("ringDataStorage[loc][wd].nextIndexToEnable:" + index);
                         if(ringDataStorage[loc][wd].nextIndexToEnable == ringDataStorage[loc][wd].LineRenderers.Count){
                             ringDataStorage[loc][wd].nextIndexToEnable = 0;
                         }
@@ -246,15 +312,21 @@ public class MapManager : MonoBehaviour{
                     }
                     
                     for(int i = 0 ; i < ringDataStorage[loc][wd].LineRenderers.Count ;i ++){
+                        if(!ringDataStorage[loc][wd].LineRenderers[i].enabled){
+                            continue;
+                        }
                         //update ring time
                         ringDataStorage[loc][wd].LineRenderTime[i] += Time.deltaTime;
                         //if time is up then set unenable
                         if(ringDataStorage[loc][wd].LineRenderTime[i] >= wd.lifespan){
                             ringDataStorage[loc][wd].LineRenderers[i].enabled = false;
+                            ringDataStorage[loc][wd].LineRenderRadius[i] = 0.0f;
+                            ringDataStorage[loc][wd].LineRenderTime[i] = 0.0f;
                             ringDataStorage[loc][wd].encounteredEnemies[i].Clear();
+                            //print("afterClearCount : " + ringDataStorage[loc][wd].encounteredEnemies[i].Count);
                             continue;
                         }
-
+                        
                         //update ring radius and draw stuff
                         ringDataStorage[loc][wd].LineRenderRadius[i] += wd.ringScaleSpeed * Time.deltaTime;
                         float radius = ringDataStorage[loc][wd].LineRenderRadius[i];
@@ -266,22 +338,45 @@ public class MapManager : MonoBehaviour{
                         for(int j = 0 ; j < lr.positionCount ; j++){
                             //cos(radians) and sin(radians)
                             curnAngle += perAngle; 
-                            lr.SetPosition(j,(new Vector3(Mathf.Cos(curnAngle)* radius,Mathf.Sin(curnAngle) * radius) + worldLoc));
+                            lr.SetPosition(j,(new Vector3(Mathf.Cos(curnAngle)* radius,Mathf.Sin(curnAngle) * radius) + worldLocCenter));
                         }
+                        
+                        //update the damage to the enemy
+                        if(nearestEnemy != null){//if there's enemy then check if enemy colli with the ring
+                            Vector3 towerToEnemyVector = Vector3.zero;
+                            Vector3 tempV = Vector3.zero;
+                            foreach(GameObject g in currentEnemies){
+                                towerToEnemyVector = g.transform.position - (worldLocCenter);
+                                towerToEnemyVector.z = 0;
+                                tempV = worldLocCenter + towerToEnemyVector.normalized * radius;
+                                tempV.z = 0;
+                                //if hit
+                                if(getDisSquared(tempV,g.transform.position) <= 0.8f && !ringDataStorage[loc][wd].encounteredEnemies[i].Contains(g)){
+                                    g.GetComponent<DefaultEnemyBehavior>().addHealth( - wd.atkDamage);
+                                    if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
+                                        Destroy(g);
+                                    }
+                                    ringDataStorage[loc][wd].encounteredEnemies[i].Add(g);
+                                    
+                                    //practice test
+                                    ParticleSystem.EmitParams ep = new ParticleSystem.EmitParams();
+                                    ep.position = g.transform.position;
+                                    //ep.angularVelocity = 0.0f;
+                                    //ep.startLifetime = 3.0f;
+                                    //ep.velocity = new Vector3(-5 + Random.value * 10, -5 + Random.value * 10);
+                                    ep.applyShapeToPosition = true;
+                                    //ep.startSize = 3.0f;
 
-                        //update the damage to the enemy 
-                        Vector3 towerToEnemyVector = Vector3.zero;
-                        Vector3 tempV = Vector3.zero;
-                        foreach(GameObject g in currentEnemies){
-                            towerToEnemyVector = g.transform.position - worldLoc;
-                            tempV = worldLoc + towerToEnemyVector.normalized * radius;
-                            //if hit
-                            if(getDisSquared(tempV,g.transform.position) <= 0.8f && !ringDataStorage[loc][wd].encounteredEnemies[i].Contains(g)){
-                                g.GetComponent<DefaultEnemyBehavior>().addHealth(-10);
-                                if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
-                                    Destroy(g);
+                                    ParticleSystem.MainModule emain = ringParticleEffect[wd].main;
+                                    
+
+                                    ParticleSystem.EmissionModule em = ringParticleEffect[wd].emission;
+                                    //em.enabled = false;
+                                    //em.rateOverTime = 200;
+                                    ringParticleEffect[wd].Emit(ep,10);
+                                    
+                                    
                                 }
-                                ringDataStorage[loc][wd].encounteredEnemies[i].Add(g);
                             }
                         }
                     }
@@ -316,7 +411,7 @@ public class MapManager : MonoBehaviour{
     }
 
     float getDisSquared(Vector3 pos1,Vector3 pos2){
-        return (pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y);
+        return ((pos1.x - pos2.x) * (pos1.x - pos2.x)) + ((pos1.y - pos2.y) * (pos1.y - pos2.y));
     }
 
     public void placeTower(Vector3Int pos,TowerData td){
@@ -324,24 +419,39 @@ public class MapManager : MonoBehaviour{
         TowerTileMap.SetTile(pos,td.tiles[0]);
         towerLocs.Add(pos);
         Vector3 worldLoc = TowerTileMap.CellToWorld(pos);
-        Dictionary<gunWeaponData, float> gunWeaponTimeDic = new Dictionary<gunWeaponData, float>();
-        Dictionary<laserWeaponData, float> laserWeaponTimeDic = new Dictionary<laserWeaponData, float>();
-        Dictionary<laserWeaponData,LineRenderer> laserWeaponRendererDic = new Dictionary<laserWeaponData, LineRenderer>();
         
        
         //for each weapon add to Dictionary  
         if(td.gunWeaponDatas != null){
+            Dictionary<gunWeaponData,GunDataStorer> gunWeaponDic = new Dictionary<gunWeaponData, GunDataStorer>();
             foreach(gunWeaponData wd in td.gunWeaponDatas){
-                gunWeaponTimeDic.Add(wd,0.0f);
+                GunDataStorer gds = new GunDataStorer();
+                int bulletCountNeeded = (int)(wd.bulletLifeSpan / wd.atkSpeed) + 1;
+                for(int i = 0 ; i < bulletCountNeeded ; i++){
+                    GameObject bullet = Instantiate(wd.bullet);
+                    bullet.SetActive(false);
+
+                    bullet.GetComponent<Bullet>().setBulletLifeSpan(wd.bulletLifeSpan);
+                    bullet.GetComponent<Bullet>().setIniDirection(Vector3.zero);
+                    bullet.GetComponent<Bullet>().setBulletSpeed(wd.bulletSpeed);
+
+                    gds.bulletpool.Add(bullet);
+                }
+                gunWeaponDic.Add(wd,gds);
             }
+            gunDataStorage.Add(pos,gunWeaponDic);
         }
         if(td.laserWeaponDatas != null){
+            Dictionary<laserWeaponData, LaserDataStorer> laserWeaponDic = new Dictionary<laserWeaponData, LaserDataStorer>();
             foreach(laserWeaponData wd in td.laserWeaponDatas){
-                laserWeaponTimeDic.Add(wd,0.0f);
-                laserWeaponRendererDic.Add(wd,Instantiate(wd.laser,Vector3.zero,Quaternion.identity));
-            }
-        }
 
+                LaserDataStorer lds = new LaserDataStorer();
+                lds.time = 0.0f;
+                lds.lineRenderer = Instantiate(wd.laser,Vector3.zero,Quaternion.identity);
+                laserWeaponDic.Add(wd,lds);
+            }
+            laserWeaponStorage.Add(pos,laserWeaponDic);
+        }
         if(td.ringWeaponDatas != null){
             Dictionary<ringWeaponData, RingDataStorer> ringWeaponDic = new Dictionary<ringWeaponData, RingDataStorer>();
             foreach(ringWeaponData wd in td.ringWeaponDatas){
@@ -360,14 +470,9 @@ public class MapManager : MonoBehaviour{
             }
             ringDataStorage.Add(pos,ringWeaponDic);
         }
-
         
-
-        gunWeaponTimers.Add(pos,gunWeaponTimeDic);
-        laserWeaponTimers.Add(pos,laserWeaponTimeDic);
-        laserWeaponRenderers.Add(pos,laserWeaponRendererDic);
-        
-    }
+        infoBoxDataStorage.Add(pos,new infoBoxClass());
+    }   
 
     public void setCurrentSelectedData(TowerData td){
         currentSelectedTowerData = td;
@@ -389,6 +494,35 @@ public class MapManager : MonoBehaviour{
 
             //last pos = curn pos
             lastUIGridPos = currentUIGridPos;
+        }
+    }
+
+
+    public GameObject infoBox;
+    Dictionary<Vector3Int,infoBoxClass> infoBoxDataStorage;
+    public class infoBoxClass{
+        public float DPS = 0.0f;
+        public float totalDamageDealt = 0.0f;
+    }
+    public void ClickedTileTower(){//update the info box to get the towerdata
+        if(Input.GetMouseButtonDown(0)){
+            Vector3 mouseToWorldLoc = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouseToWorldLoc.z = 0;
+            Vector3Int gridPos = TowerTileMap.WorldToCell(mouseToWorldLoc);
+            Sprite img = TowerTileMap.GetSprite(gridPos);
+            TileBase tb = TowerTileMap.GetTile(gridPos);
+            
+            print("pos:" + gridPos);
+
+            if(tb != null){
+                TowerData td = towerDataFromTiles[TowerTileMap.GetTile(gridPos)];
+            
+
+                infoBox.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = img;//icon
+                infoBox.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = td.towerType.ToString();//towerName
+                infoBox.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().text = "DPS:1";//dps
+                infoBox.transform.GetChild(3).gameObject.GetComponent<TextMeshProUGUI>().text = "Damage Dealt:2";//damage dealt
+            }
         }
     }
 }

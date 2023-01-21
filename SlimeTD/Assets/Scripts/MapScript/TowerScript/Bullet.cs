@@ -8,19 +8,12 @@ public class Bullet : MonoBehaviour
     private float bulletSpeed;
     private float bulletAtk;
     private float life;
-    Vector3 enemyPos;
-    Vector3 velocity;
+    private Vector3 enemyPos;
+    private Vector3 direction;
+    
     void Start()
     {
-        life = 0.0f;
-        enemyPos = getNearestEnemyPos(transform.position);
-        Vector2 direction = enemyPos - transform.position;
-       
-        //rb = GetComponent<Rigidbody2D>();
-        velocity = direction.normalized * bulletSpeed;
-        
-        float rotz = Mathf.Atan2(-direction.y,-direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0,0,rotz);
+        resetLife();
 
     }
     // Update is called once per frame
@@ -29,27 +22,13 @@ public class Bullet : MonoBehaviour
         //==================
 
         life += Time.deltaTime;
-        if(life > lifespan){
-            Destroy(this.gameObject,0);
-        }
-        transform.position += velocity * Time.deltaTime;
-        isColliAnyEnemy();
+        transform.position += direction * bulletSpeed * Time.deltaTime;
     }
-    Vector3 getNearestEnemyPos(Vector3 pos){
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("MovingDude");
-        if(enemies.Length == 0)return new Vector3(0.0f,0.0f,0.0f);
-
-        Vector3 resPos = new Vector3(0.0f,0.0f,0.0f);
-        float minDis = float.MaxValue;
-        float dis = 0.0f;
-        foreach(GameObject g in enemies){
-            dis = getDisSquared(g.transform.position,pos);
-            if(dis < minDis){
-                minDis = dis;
-                resPos = g.transform.position;
-            }
-        }
-        return resPos;
+    public void resetLife(){
+        life = 0.0f;
+    }
+    public void setIniDirection(Vector3 dir){
+        this.direction = dir;
     }
 
     public float getBulletAtk(){
@@ -58,12 +37,19 @@ public class Bullet : MonoBehaviour
     public void setBulletAtk(float atk){
         this.bulletAtk = atk;
     }
+
+    public float getBulletLifeSpan(){
+        return this.lifespan;
+    }
     public void setBulletLifeSpan(float lifespan){
         this.lifespan = lifespan;
     }
     public void setBulletSpeed(float speed){
         this.bulletSpeed = speed;
+    }
 
+    public float getLife(){
+        return this.life;
     }
     float getDisSquared(Vector3 pos1,Vector3 pos2){
         return (((pos1.x - pos2.x) * (pos1.x - pos2.x)) + ((pos1.y - pos2.y) * (pos1.y - pos2.y)));
