@@ -214,7 +214,7 @@ public class MapManager : MonoBehaviour{
                 foreach(laserWeaponData wd in towerDataFromTiles[towerTile].laserWeaponDatas){
                     //have n weapon + n timer
                     laserWeaponTimers[loc][wd] += Time.deltaTime;
-                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().health -= wd.atkDamage * Time.deltaTime;
+                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().setHealth(-wd.atkDamage * Time.deltaTime);
                     //draw laser
                     laserWeaponRenderers[loc][wd].enabled = true;
                     laserWeaponRenderers[loc][wd].SetPosition(0,worldLoc);
@@ -277,8 +277,8 @@ public class MapManager : MonoBehaviour{
                             tempV = worldLoc + towerToEnemyVector.normalized * radius;
                             //if hit
                             if(getDisSquared(tempV,g.transform.position) <= 0.8f && !ringDataStorage[loc][wd].encounteredEnemies[i].Contains(g)){
-                                g.GetComponent<DefaultEnemyBehavior>().health -= 1000;
-                                if(g.GetComponent<DefaultEnemyBehavior>().health <= 0){
+                                g.GetComponent<DefaultEnemyBehavior>().addHealth(-10);
+                                if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                                     Destroy(g);
                                 }
                                 ringDataStorage[loc][wd].encounteredEnemies[i].Add(g);
