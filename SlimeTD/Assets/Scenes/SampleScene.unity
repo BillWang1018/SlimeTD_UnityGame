@@ -20848,7 +20848,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455249559}
   m_Enabled: 1
-  m_CellSize: {x: 0.32, y: 0.32, z: 0.32}
+  m_CellSize: {x: 1, y: 1, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -20923,10 +20923,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 60
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 7.07
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -21174,7 +21174,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 1, y: 1, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -22878,7 +22878,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 161.51001, y: -54.90001}
+  m_AnchoredPosition: {x: 200, y: -40}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1581736339
@@ -23723,6 +23723,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8239e89d98622704a9d3d355ae77a22b, type: 2}
   UItileMap: {fileID: 1841982275}
   inventory: {fileID: 1281848500}
+  infoBox: {fileID: 0}
 --- !u!4 &1964902633
 Transform:
   m_ObjectHideFlags: 0
@@ -24104,7 +24105,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 5.1499634}
+  m_AnchoredPosition: {x: 0, y: -40}
   m_SizeDelta: {x: 487.14, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2076672030
@@ -24315,6 +24316,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 0, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 2
+      m_TileSpriteIndex: 2
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 19, y: 4, z: 0}
     second:
       serializedVersion: 2
@@ -24351,13 +24362,17 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: c80031ac8b5a5bb488fd73ac2fbec1b2, type: 2}
   - m_RefCount: 3
     m_Data: {fileID: 11400000, guid: f48c1f2c3f7d7644d87f1e3f39592cd9, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 38aad334e248abc4c82acaa07673658d, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 2
     m_Data: {fileID: 21300000, guid: 2dddf0e0bcf1dd443a9f894295144e69, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 21300000, guid: 5a3f1b71e14321c43b7320deacb11064, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: df407f93fb3c6a2439b31666dc7e438f, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 5
+  - m_RefCount: 6
     m_Data:
       e00: 1
       e01: 0
@@ -24376,7 +24391,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 5
+  - m_RefCount: 6
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
