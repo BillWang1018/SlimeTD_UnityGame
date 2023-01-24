@@ -7,6 +7,7 @@ public class EnemyData : ScriptableObject
 {
     public Sprite enemyImage;
     public float speed, health;
+    public float regeneratePerSec, buffedPercentage, nerfedPercentage;
 }
 
 

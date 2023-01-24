@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e2019d4630ac5d46988286ce75aaba2, type: 3}
   m_Name: RingWeaponData1
   m_EditorClassIdentifier: 
-  atkDamage: 100
+  atkDamage: 10
   atkSpeed: 1
   ringScaleSpeed: 10
   lifespan: 0.2

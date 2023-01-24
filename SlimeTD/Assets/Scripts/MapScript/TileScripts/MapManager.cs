@@ -209,7 +209,7 @@ public class MapManager : MonoBehaviour{
                                     infoBoxDataStorage[loc].totalDamageDealt += g.GetComponent<DefaultEnemyBehavior>().getHealth();
                                 }
 
-                                g.GetComponent<DefaultEnemyBehavior>().addHealth(- wd.atkDamage);
+                                g.GetComponent<DefaultEnemyBehavior>().attacked(wd.atkDamage);
 
                                 
 
@@ -270,7 +270,7 @@ public class MapManager : MonoBehaviour{
                         infoBoxDataStorage[loc].totalDamageDealt += nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth();
                     }
 
-                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().addHealth(- wd.atkDamage * Time.deltaTime);
+                    nearestEnemy.GetComponent<DefaultEnemyBehavior>().attacked(wd.atkDamage * Time.deltaTime);
                     if(nearestEnemy.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                         Destroy(nearestEnemy);
                     }
@@ -352,7 +352,7 @@ public class MapManager : MonoBehaviour{
                                 tempV.z = 0;
                                 //if hit
                                 if(getDisSquared(tempV,g.transform.position) <= 0.8f && !ringDataStorage[loc][wd].encounteredEnemies[i].Contains(g)){
-                                    g.GetComponent<DefaultEnemyBehavior>().addHealth( - wd.atkDamage);
+                                    g.GetComponent<DefaultEnemyBehavior>().attacked(wd.atkDamage);
                                     if(g.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                                         Destroy(g);
                                     }

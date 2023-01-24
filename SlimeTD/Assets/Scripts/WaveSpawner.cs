@@ -11,7 +11,7 @@ public class WaveSpawner : MonoBehaviour
     public float timeBetweenSpawn = 1f;
     public float timeBetweenWaves = 5.5f;
     public float countdownTimer;
-    private bool isSpawning;
+    private bool isWaveActive;
     [SerializeField]
     private List<EnemyData> enemyDatas;
 
@@ -19,15 +19,14 @@ public class WaveSpawner : MonoBehaviour
     {
         waveIndex = 0;
         countdownTimer = timeBetweenWaves;
-        isSpawning = false;
 
     }
     void Update()
     {
-        if(!isSpawning)
+        isWaveActive = GameObject.FindGameObjectWithTag("MovingDude") != null;
+        if(!isWaveActive)
             countdownTimer -= Time.deltaTime;
         if(countdownTimer <= 0) {
-            isSpawning = true;
             if(waveIndex < maxWaveCount) {
                 waveIndex++;
                 Debug.Log(">>> Spawning wave "+waveIndex);
@@ -49,6 +48,5 @@ public class WaveSpawner : MonoBehaviour
             SpawnEnemy(enemyPrefab, spawnPoint);
             yield return new WaitForSeconds(timeBetweenSpawn);
         }
-        isSpawning = false;
     }
 }

@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
         foreach(GameObject go in enemies){
             float dis = getDisSquared(transform.position,go.transform.position);
             if(dis < hitradiusSquared){
-                go.GetComponent<DefaultEnemyBehavior>().addHealth(-bulletAtk);
+                go.GetComponent<DefaultEnemyBehavior>().attacked(bulletAtk);
                 Destroy(this.gameObject);
                 if(go.GetComponent<DefaultEnemyBehavior>().getHealth() <= 0){
                     Destroy(go);

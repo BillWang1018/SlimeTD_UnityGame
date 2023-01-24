@@ -11,7 +11,7 @@ public class UIUpdate : MonoBehaviour
     private float countdownTimer, timeBetweenWaves;
 
     void Update() {
-        lifeCounter.text = "Life: " + GameManager.lifeCount.ToString();
+        lifeCounter.text = "Life: " + GameManager.instance.lifeCount.ToString();
 
         waveCounter.text = "Wave: " + WaveSpawner.waveIndex.ToString();
 
